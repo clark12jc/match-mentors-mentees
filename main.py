@@ -125,14 +125,9 @@ def format_match_for_excel(mentor, mentee):
     match_dict = {
         'Mentor': mentor.full_name,
         'Mentee': mentee.full_name,
-        'Mentee Location': mentee.location
+        'Mentor Email': mentor.email,
+        'Mentee Email': mentee.email
     }
-    # match_dict = {
-    #     'Mentor': mentor.full_name,
-    #     'Mentee': mentee.full_name,
-    #     'Mentee Email': mentee.email,
-    #     'Mentee Location': mentee.location
-    # }
     return match_dict
 
 
@@ -146,6 +141,27 @@ def write_matches_to_excel(match_list):
     try:
         df = pd.DataFrame(match_list)
         writer = pd.ExcelWriter('output.xlsx', engine='xlsxwriter', options={'strings_to_urls': False})
+        df.to_excel(writer)
+        writer.save()
+    except Exception as e:
+        print(e)
+    return
+
+
+def write_no_matches_to_excel(no_match_list):
+    new_list = []
+    for mentor in no_match_list:
+        mentor_dict = {
+            'Name': mentor.full_name,
+            'Email': mentor.email,
+            'Location': mentor.location
+        }
+        new_list.append(mentor_dict)
+    no_match_list = new_list
+
+    try:
+        df = pd.DataFrame(no_match_list)
+        writer = pd.ExcelWriter('no-matches.xlsx', engine='xlsxwriter', options={'strings_to_urls': False})
         df.to_excel(writer)
         writer.save()
     except Exception as e:
@@ -265,6 +281,7 @@ def main():
     for mentor in mentor_list:
         if mentor.has_match is False:
             no_match_mentors.append(mentor)
+    write_no_matches_to_excel(no_match_mentors)
 
 
 # Instantiate main 888888888888888888888888888888888888888888888888888888888888

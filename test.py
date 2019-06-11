@@ -2,6 +2,11 @@ import main
 import pandas as pd
 
 
+def test_semi():
+    x = 'Health;'
+    print(main.format_market(x))
+
+
 def test_unique_matches():
     print('\nTest - Unique People in Match')
     df = pd.read_excel("output.xlsx", skipinitialspace=True, dtype=str)
@@ -59,3 +64,4 @@ if __name__ == '__main__':
     test_split_markets()
     test_normalize_location()
     test_unique_matches()
+    test_semi()
